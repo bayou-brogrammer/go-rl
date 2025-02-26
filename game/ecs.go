@@ -1,12 +1,12 @@
-// This files handles a common representation for all kind of entities that can
-// be placed on the map.
-
 package main
 
 import (
 	"codeberg.org/anaseto/gruid"
-	"codeberg.org/anaseto/gruid/rl"
+	"github.com/bayou-brogrammer/go-rl/game/color"
 )
+
+// Entity represents an object or creature on the map.
+type Entity interface{}
 
 // ECS manages entities, as well as their positions. We don't go full “ECS”
 // (Entity-Component-System) in this tutorial, opting for a simpler hybrid
@@ -53,7 +53,7 @@ func (es *ECS) AddEntity(e Entity, p gruid.Point) int {
 func (es *ECS) AddItem(e Entity, p gruid.Point, name string, r rune) int {
 	id := es.AddEntity(e, p)
 	es.Name[id] = name
-	es.Style[id] = Style{Rune: r, Color: ColorConsumable}
+	es.Style[id] = Style{Rune: r, Color: color.ColorConsumable}
 	return id
 }
 
@@ -175,54 +175,3 @@ func (es *ECS) Status(i int, st status) bool {
 	_, ok := es.Statuses[i][st]
 	return ok
 }
-
-// renderOrder is a type representing the priority of an entity rendering.
-type renderOrder int
-
-// Those constants represent distinct kinds of rendering priorities. In case
-// two entities are at a given position, only the one with the highest priority
-// gets displayed.
-const (
-	RONone renderOrder = iota
-	ROCorpse
-	ROItem
-	ROActor
-)
-
-// RenderOrder returns the rendering priority of an entity.
-func (es *ECS) RenderOrder(i int) (ro renderOrder) {
-	switch es.Entities[i].(type) {
-	case *Player:
-		ro = ROActor
-	case *Monster:
-		if es.Dead(i) {
-			ro = ROCorpse
-		} else {
-			ro = ROActor
-		}
-	case *Consumable:
-		ro = ROItem
-	}
-	return ro
-}
-
-// Entity represents an object or creature on the map.
-type Entity interface{}
-
-// Player contains information relevant to the player.
-type Player struct {
-	FOV *rl.FOV // player's field of view
-}
-
-// maxLOS is the maximum distance in player's field of view.
-const maxLOS = 10
-
-// NewPlayer returns a new Player entity at a given position.
-func NewPlayer() *Player {
-	player := &Player{}
-	player.FOV = rl.NewFOV(gruid.NewRange(-maxLOS, -maxLOS, maxLOS+1, maxLOS+1))
-	return player
-}
-
-// Monster represents a monster.
-type Monster struct{}

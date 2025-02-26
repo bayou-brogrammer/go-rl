@@ -7,7 +7,9 @@ import (
 
 	"codeberg.org/anaseto/gruid"
 	"codeberg.org/anaseto/gruid/ui"
+	"github.com/bayou-brogrammer/go-rl/game/color"
 )
+
 
 // Draw implements gruid.Model.Draw. It draws a simple map that spans the whole
 // grid.
@@ -36,7 +38,7 @@ func (m *model) Draw() gruid.Grid {
 		}
 		c := gruid.Cell{Rune: g.Map.Rune(it.Cell())}
 		if g.InFOV(it.P()) {
-			c.Style.Bg = ColorFOV
+			c.Style.Bg = color.ColorFOV
 		}
 		mapgrid.Set(it.P(), c)
 	}
@@ -99,11 +101,11 @@ func (m *model) DrawLog(gd gruid.Grid) {
 // DrawStatus draws the status line
 func (m *model) DrawStatus(gd gruid.Grid) {
 	st := gruid.Style{}
-	st.Fg = ColorStatusHealthy
+	st.Fg = color.ColorStatusHealthy
 	g := m.game
 	stats := g.ECS.Stats[g.ECS.PlayerID]
 	if stats.HP < stats.MaxHP/2 {
-		st.Fg = ColorStatusWounded
+		st.Fg = color.ColorStatusWounded
 	}
 	m.log.Content = ui.Textf("HP: %d/%d", stats.HP, stats.MaxHP).WithStyle(st)
 	m.log.Draw(gd)
@@ -122,7 +124,7 @@ func (m *model) DrawNames(gd gruid.Grid) {
 	rg = rg.Intersect(maprg.Sub(maprg.Min))
 	rg.Iter(func(q gruid.Point) {
 		c := gd.At(q)
-		c.Style.Attrs |= AttrReverse
+		c.Style.Attrs |= color.AttrReverse
 		gd.Set(q, c)
 	})
 	// We get the names of the entities at p.

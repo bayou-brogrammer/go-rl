@@ -1,4 +1,4 @@
-module codeberg.org/anaseto/gruid-examples
+module github.com/bayou-brogrammer/go-rl
 
 go 1.24
 
@@ -9,6 +9,7 @@ require (
 )
 
 require (
+	github.com/anaseto/gruid v0.22.0
 	github.com/veandco/go-sdl2 v0.4.40 // indirect
 	golang.org/x/text v0.22.0 // indirect
 )

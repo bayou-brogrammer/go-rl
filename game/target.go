@@ -4,6 +4,7 @@ import (
 	"errors"
 
 	"codeberg.org/anaseto/gruid"
+	"github.com/bayou-brogrammer/go-rl/game/color"
 )
 
 // InventoryActivateWithTarget uses a given item from the inventory, with
@@ -32,7 +33,7 @@ func (g *game) InventoryActivateWithTarget(actor, n int, targ *gruid.Point) erro
 func (m *model) activateTarget(p gruid.Point) {
 	err := m.game.InventoryActivateWithTarget(m.game.ECS.PlayerID, m.targ.item, &p)
 	if err != nil {
-		m.game.Logf("%v", ColorLogSpecial, err)
+		m.game.Logf("%v", color.ColorLogSpecial, err)
 	} else {
 		m.game.EndTurn()
 	}

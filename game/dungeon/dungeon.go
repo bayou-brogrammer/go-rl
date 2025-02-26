@@ -1,6 +1,6 @@
 // This file contains map-related code.
 
-package main
+package dungeon
 
 import (
 	"math/rand"
@@ -33,6 +33,14 @@ func NewMap(size gruid.Point) *Map {
 	}
 	m.Generate()
 	return m
+}
+
+func (m *Map) GetRand() *rand.Rand {
+	return m.rand
+}
+
+func (m *Map) SeedRand(seed int64) {
+	m.rand = rand.New(rand.NewSource(seed))
 }
 
 // Walkable returns true if at the given position there is a floor tile.

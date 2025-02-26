@@ -8,6 +8,7 @@ import (
 
 	"codeberg.org/anaseto/gruid"
 	"codeberg.org/anaseto/gruid/paths"
+	"github.com/bayou-brogrammer/go-rl/game/color"
 )
 
 // Consumable describes a consumable item, like a potion.
@@ -41,7 +42,7 @@ func (pt *HealingPotion) Activate(g *game, a itemAction) error {
 		return errors.New("Your health is already full.")
 	}
 	if a.Actor == g.ECS.PlayerID {
-		g.Logf("You regained %d HP", ColorLogItemUse, hp)
+		g.Logf("You regained %d HP", color.ColorLogItemUse, hp)
 	}
 	return nil
 }
@@ -70,7 +71,7 @@ func (sc *LightningScroll) Activate(g *game, a itemAction) error {
 	if target < 0 {
 		return errors.New("No enemy within range.")
 	}
-	g.Logf("A lightning bolt strikes %v.", ColorLogItemUse, g.ECS.GetName(target))
+	g.Logf("A lightning bolt strikes %v.", color.ColorLogItemUse, g.ECS.GetName(target))
 	g.ECS.Stats[target].HP -= sc.Damage
 	return nil
 }
@@ -103,7 +104,7 @@ func (sc *ConfusionScroll) Activate(g *game, a itemAction) error {
 	if i <= 0 || !g.ECS.Alive(i) {
 		return errors.New("You have to target a monster.")
 	}
-	g.Logf("%s looks confused (scroll).", ColorLogPlayerAttack, g.ECS.GetName(i))
+	g.Logf("%s looks confused (scroll).", color.ColorLogPlayerAttack, g.ECS.GetName(i))
 	g.ECS.PutStatus(i, StatusConfused, sc.Turns)
 	return nil
 }
@@ -138,7 +139,7 @@ func (sc *FireballScroll) Activate(g *game, a itemAction) error {
 		if dist > sc.Radius {
 			continue
 		}
-		g.Logf("%v is engulfed in flames.", ColorLogPlayerAttack, g.ECS.GetName(i))
+		g.Logf("%v is engulfed in flames.", color.ColorLogPlayerAttack, g.ECS.GetName(i))
 		st.HP -= sc.Damage
 		hits++
 	}

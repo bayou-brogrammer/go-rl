@@ -9,6 +9,8 @@ import (
 
 	"codeberg.org/anaseto/gruid"
 	"codeberg.org/anaseto/gruid/paths"
+	"github.com/bayou-brogrammer/go-rl/game/color"
+	"github.com/bayou-brogrammer/go-rl/game/dungeon"
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
 )
@@ -16,7 +18,7 @@ import (
 // game represents information relevant the current game's state.
 type game struct {
 	ECS *ECS             // entities present on the map
-	Map *Map             // the game map, made of tiles
+	Map *dungeon.Map     // the game map, made of tiles
 	PR  *paths.PathRange // path range for the map
 	Log []LogEntry       // log entries
 }
@@ -27,7 +29,7 @@ func NewGame() *game {
 	size := gruid.Point{UIWidth, UIHeight}
 	size.Y -= 3 // for log and status
 
-	g.Map = NewMap(size)
+	g.Map = dungeon.NewMap(size)
 	g.PR = paths.NewPathRange(gruid.NewRange(0, 0, size.X, size.Y))
 
 	// Initialize entities
@@ -38,7 +40,7 @@ func NewGame() *game {
 	g.ECS.Stats[g.ECS.PlayerID] = &Stats{
 		HP: 30, MaxHP: 30, Power: 5, Defense: 2,
 	}
-	g.ECS.Style[g.ECS.PlayerID] = Style{Rune: '@', Color: ColorPlayer}
+	g.ECS.Style[g.ECS.PlayerID] = Style{Rune: '@', Color: color.ColorPlayer}
 	g.ECS.Name[g.ECS.PlayerID] = "player"
 	g.ECS.Inventory[g.ECS.PlayerID] = &Inventory{}
 	g.UpdateFOV()
@@ -65,7 +67,7 @@ func (g *game) SpawnMonsters() {
 		)
 		kind := orc
 		switch {
-		case g.Map.rand.Intn(100) < 80:
+		case g.Map.GetRand().Intn(100) < 80:
 		default:
 			kind = troll
 		}
@@ -77,13 +79,13 @@ func (g *game) SpawnMonsters() {
 				HP: 10, MaxHP: 10, Defense: 0, Power: 3,
 			}
 			g.ECS.Name[i] = "orc"
-			g.ECS.Style[i] = Style{Rune: 'o', Color: ColorMonster}
+			g.ECS.Style[i] = Style{Rune: 'o', Color: color.ColorMonster}
 		case troll:
 			g.ECS.Stats[i] = &Stats{
 				HP: 16, MaxHP: 16, Defense: 1, Power: 4,
 			}
 			g.ECS.Name[i] = "troll"
-			g.ECS.Style[i] = Style{Rune: 'T', Color: ColorMonster}
+			g.ECS.Style[i] = Style{Rune: 'T', Color: color.ColorMonster}
 		}
 		g.ECS.AI[i] = &AI{}
 	}
@@ -128,7 +130,7 @@ func (g *game) UpdateFOV() {
 	// We mark cells in field of view as explored. We use the symmetric
 	// shadow casting algorithm provided by the rl package.
 	passable := func(p gruid.Point) bool {
-		return g.Map.Grid.At(p) != Wall
+		return g.Map.Grid.At(p) != dungeon.Wall
 	}
 	for _, p := range player.FOV.SSCVisionMap(pp, maxLOS, passable, false) {
 		if paths.DistanceManhattan(p, pp) > maxLOS {
@@ -156,15 +158,17 @@ func (g *game) BumpAttack(i, j int) {
 	stj := g.ECS.Stats[j]
 	damage := st.Power - stj.Defense
 	attackDesc := fmt.Sprintf("%s attacks %s", cases.Title(language.English).String(g.ECS.Name[i]), g.ECS.Name[j])
-	color := ColorLogMonsterAttack
+	col := color.ColorLogMonsterAttack
+
 	if i == g.ECS.PlayerID {
-		color = ColorLogPlayerAttack
+		col = color.ColorLogPlayerAttack
 	}
+
 	if damage > 0 {
-		g.Logf("%s for %d damage", color, attackDesc, damage)
+		g.Logf("%s for %d damage", col, attackDesc, damage)
 		stj.HP -= damage
 	} else {
-		g.Logf("%s but does no damage", color, attackDesc)
+		g.Logf("%s but does no damage", col, attackDesc)
 	}
 }
 
@@ -173,7 +177,7 @@ func (g *game) PlaceItems() {
 	const numberOfItems = 5
 	for i := 0; i < numberOfItems; i++ {
 		p := g.FreeFloorTile()
-		r := g.Map.rand.Float64()
+		r := g.Map.GetRand().Float64()
 		switch {
 		case r < 0.7:
 			g.ECS.AddItem(&HealingPotion{Amount: 4}, p, "health potion", '!')

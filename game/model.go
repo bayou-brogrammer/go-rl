@@ -7,6 +7,7 @@ package main
 import (
 	"codeberg.org/anaseto/gruid"
 	"codeberg.org/anaseto/gruid/ui"
+	"github.com/bayou-brogrammer/go-rl/game/color"
 )
 
 type mode int
@@ -54,7 +55,7 @@ func (m *model) init() gruid.Effect {
 		Grid:    gruid.NewGrid(UIWidth/2, len(entries)+2),
 		Box:     &ui.Box{Title: ui.Text("Gruid Roguelike Tutorial")},
 		Entries: entries,
-		Style:   ui.MenuStyle{Active: gruid.Style{}.WithFg(ColorMenuActive)},
+		Style:   ui.MenuStyle{Active: gruid.Style{}.WithFg(color.ColorMenuActive)},
 	})
 	return nil
 }

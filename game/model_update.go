@@ -1,11 +1,11 @@
 package main
 
 import (
-	"math/rand"
 	"time"
 
 	"codeberg.org/anaseto/gruid"
 	"codeberg.org/anaseto/gruid/ui"
+	"github.com/bayou-brogrammer/go-rl/game/color"
 )
 
 func (m *model) Update(msg gruid.Msg) gruid.Effect {
@@ -92,7 +92,7 @@ func (m *model) updateGameMenu(msg gruid.Msg) gruid.Effect {
 			m.game = g
 			m.mode = modeNormal
 			// the random number generator is not saved
-			m.game.Map.rand = rand.New(rand.NewSource(time.Now().UnixNano()))
+			m.game.Map.SeedRand(time.Now().UnixNano())
 		case MenuQuit:
 			return gruid.End()
 		}
@@ -178,7 +178,7 @@ func (m *model) updateInventory(msg gruid.Msg) {
 		}
 
 		if err != nil {
-			m.game.Logf("%v", ColorLogSpecial, err)
+			m.game.Logf("%v", color.ColorLogSpecial, err)
 		} else {
 			m.game.EndTurn()
 		}

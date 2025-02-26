@@ -7,6 +7,7 @@ import (
 
 	"codeberg.org/anaseto/gruid"
 	"codeberg.org/anaseto/gruid/ui"
+	"github.com/bayou-brogrammer/go-rl/game/color"
 )
 
 // action represents information relevant to the last UI action performed.
@@ -53,7 +54,7 @@ func (m *model) handleAction() gruid.Effect {
 			err = SaveFile("save", data)
 		}
 		if err != nil {
-			m.game.Logf("Could not save game.", ColorLogSpecial)
+			m.game.Logf("Could not save game.", color.ColorLogSpecial)
 			log.Printf("could not save game: %v", err)
 			break
 		}
@@ -78,7 +79,7 @@ func (m *model) handleAction() gruid.Effect {
 		m.targ.pos = m.game.ECS.PP().Shift(0, LogLines)
 	}
 	if m.game.ECS.PlayerDied() {
-		m.game.Logf("You died -- press “q” or escape to quit", ColorLogSpecial)
+		m.game.Logf("You died -- press “q” or escape to quit", color.ColorLogSpecial)
 		m.mode = modeEnd
 		return nil
 	}
@@ -119,10 +120,10 @@ func (g *game) PickupItem() {
 				// not a consumable.
 				continue
 			}
-			g.Logf("Could not pickup: %v", ColorLogSpecial, err)
+			g.Logf("Could not pickup: %v", color.ColorLogSpecial, err)
 			return
 		}
-		g.Logf("You pickup %v", ColorLogItemUse, g.ECS.Name[i])
+		g.Logf("You pickup %v", color.ColorLogItemUse, g.ECS.Name[i])
 		g.EndTurn()
 		return
 	}
