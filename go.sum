@@ -1,0 +1,10 @@
+codeberg.org/anaseto/gruid v0.23.0 h1:io6D5LJuouPh5+BN3iAbZG/fQXlkRQJ16AthiDIFP+Q=
+codeberg.org/anaseto/gruid v0.23.0/go.mod h1:iNBr9jCM/LliZWAWfI1IPb3N+ILAzP/i9e+WsP0thbQ=
+codeberg.org/anaseto/gruid-sdl v0.5.0 h1:oZqQcyGkFiZhE3WdGaiko9oq4OcNs6W88VdWsaLBd1o=
+codeberg.org/anaseto/gruid-sdl v0.5.0/go.mod h1:r+j5oJoW/hlQ5DDlzeMRsMM2VU0S/UxaKHRCt5lSI90=
+github.com/veandco/go-sdl2 v0.4.40 h1:fZv6wC3zz1Xt167P09gazawnpa0KY5LM7JAvKpX9d/U=
+github.com/veandco/go-sdl2 v0.4.40/go.mod h1:OROqMhHD43nT4/i9crJukyVecjPNYYuCofep6SNiAjY=
+golang.org/x/image v0.24.0 h1:AN7zRgVsbvmTfNyqIbbOraYL8mSwcKncEj8ofjgzcMQ=
+golang.org/x/image v0.24.0/go.mod h1:4b/ITuLfqYq1hqZcjofwctIhi7sZh2WaCjvsBNjjya8=
+golang.org/x/text v0.22.0 h1:bofq7m3/HAFvbF51jz3Q9wLg3jkvSPuiZu/pD1XwgtM=
+golang.org/x/text v0.22.0/go.mod h1:YRoo4H8PVmsu+E3Ou7cqLVH8oXWIHVoX0jqUWALQhfY=
