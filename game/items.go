@@ -3,13 +3,26 @@
 package main
 
 import (
-	"errors"
 	"fmt"
 
 	"codeberg.org/anaseto/gruid"
 	"codeberg.org/anaseto/gruid/paths"
 	"github.com/bayou-brogrammer/go-rl/game/color"
+	"github.com/bayou-brogrammer/go-rl/game/logerror"
 )
+
+// Custom Error
+type LogError struct {
+	Message string
+}
+
+func (e *LogError) Error() string {
+	return e.Message
+}
+
+func (e *LogError) Errorf(format string, a ...interface{}) error {
+	return fmt.Errorf(format, a...)
+}
 
 // Consumable describes a consumable item, like a potion.
 type Consumable interface {
@@ -35,11 +48,11 @@ func (pt *HealingPotion) Activate(g *game, a itemAction) error {
 	st := g.ECS.Stats[a.Actor]
 	if st == nil {
 		// should not happen in practice
-		return fmt.Errorf("%s cannot use healing potions.", g.ECS.Name[a.Actor])
+		return logerror.Errorf("%s cannot use healing potions.", g.ECS.Name[a.Actor])
 	}
 	hp := st.Heal(pt.Amount)
 	if hp <= 0 {
-		return errors.New("Your health is already full.")
+		return logerror.New("Your health is already full.")
 	}
 	if a.Actor == g.ECS.PlayerID {
 		g.Logf("You regained %d HP", color.ColorLogItemUse, hp)
@@ -69,7 +82,7 @@ func (sc *LightningScroll) Activate(g *game, a itemAction) error {
 		}
 	}
 	if target < 0 {
-		return errors.New("No enemy within range.")
+		return logerror.New("No enemy within range.")
 	}
 	g.Logf("A lightning bolt strikes %v.", color.ColorLogItemUse, g.ECS.GetName(target))
 	g.ECS.Stats[target].HP -= sc.Damage
@@ -91,18 +104,18 @@ type ConfusionScroll struct {
 
 func (sc *ConfusionScroll) Activate(g *game, a itemAction) error {
 	if a.Target == nil {
-		return errors.New("You have to chose a target.")
+		return logerror.New("You have to chose a target.")
 	}
 	p := *a.Target
 	if !g.InFOV(p) {
-		return errors.New("You cannot target what you cannot see.")
+		return logerror.New("You cannot target what you cannot see.")
 	}
 	if p == g.ECS.PP() {
-		return errors.New("You cannot confuse yourself.")
+		return logerror.New("You cannot confuse yourself.")
 	}
 	i := g.ECS.MonsterAt(p)
 	if i <= 0 || !g.ECS.Alive(i) {
-		return errors.New("You have to target a monster.")
+		return logerror.New("You have to target a monster.")
 	}
 	g.Logf("%s looks confused (scroll).", color.ColorLogPlayerAttack, g.ECS.GetName(i))
 	g.ECS.PutStatus(i, StatusConfused, sc.Turns)
@@ -120,11 +133,11 @@ type FireballScroll struct {
 
 func (sc *FireballScroll) Activate(g *game, a itemAction) error {
 	if a.Target == nil {
-		return errors.New("You have to chose a target.")
+		return logerror.New("You have to chose a target.")
 	}
 	p := *a.Target
 	if !g.InFOV(p) {
-		return errors.New("You cannot target what you cannot see.")
+		return logerror.New("You cannot target what you cannot see.")
 	}
 	hits := 0
 	// NOTE: this could be made more complicated by checking whether there
@@ -144,7 +157,7 @@ func (sc *FireballScroll) Activate(g *game, a itemAction) error {
 		hits++
 	}
 	if hits <= 0 {
-		return errors.New("There are no targets in the radius.")
+		return logerror.New("There are no targets in the radius.")
 	}
 	return nil
 }
