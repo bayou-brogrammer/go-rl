@@ -1,0 +1,13 @@
+{
+    "editor.formatOnSave": true,
+    "makefile.configureOnOpen": true,
+    "go.toolsManagement.autoUpdate": true,
+    "gopls": {
+        "analyses": {
+            "composites": false
+        }
+    },
+    "go.testFlags": [
+        "-v"
+    ]
+}

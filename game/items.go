@@ -3,26 +3,11 @@
 package main
 
 import (
-	"fmt"
-
 	"codeberg.org/anaseto/gruid"
 	"codeberg.org/anaseto/gruid/paths"
 	"github.com/bayou-brogrammer/go-rl/game/color"
 	"github.com/bayou-brogrammer/go-rl/game/logerror"
 )
-
-// Custom Error
-type LogError struct {
-	Message string
-}
-
-func (e *LogError) Error() string {
-	return e.Message
-}
-
-func (e *LogError) Errorf(format string, a ...interface{}) error {
-	return fmt.Errorf(format, a...)
-}
 
 // Consumable describes a consumable item, like a potion.
 type Consumable interface {

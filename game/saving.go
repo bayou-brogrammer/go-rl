@@ -7,10 +7,11 @@ import (
 	"compress/gzip"
 	"encoding/gob"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"runtime"
+
+	"github.com/bayou-brogrammer/go-rl/game/logerror"
 )
 
 func init() {
@@ -68,15 +69,17 @@ func DataDir() (string, error) {
 		// Linux, BSD, etc.
 		xdg = os.Getenv("XDG_DATA_HOME")
 	}
+
 	if xdg == "" {
 		xdg = filepath.Join(os.Getenv("HOME"), ".local", "share")
 	}
+
 	dataDir := filepath.Join(xdg, "gruid-rltuto")
 	_, err := os.Stat(dataDir)
 	if err != nil {
 		err = os.MkdirAll(dataDir, 0755)
 		if err != nil {
-			return dataDir, fmt.Errorf("building data directory: %v\n", err)
+			return dataDir, logerror.Errorf("building data directory: %v\n", err)
 		}
 	}
 	return dataDir, nil
@@ -125,7 +128,7 @@ func LoadFile(filename string) ([]byte, error) {
 	if err != nil {
 		return nil, fmt.Errorf("no such file: %s", filename)
 	}
-	data, err := ioutil.ReadFile(fp)
+	data, err := os.ReadFile(fp)
 	if err != nil {
 		return nil, err
 	}

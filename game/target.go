@@ -1,10 +1,9 @@
 package main
 
 import (
-	"errors"
-
 	"codeberg.org/anaseto/gruid"
 	"github.com/bayou-brogrammer/go-rl/game/color"
+	"github.com/bayou-brogrammer/go-rl/game/logerror"
 )
 
 type targeting struct {
@@ -18,8 +17,9 @@ type targeting struct {
 func (g *game) InventoryActivateWithTarget(actor, n int, targ *gruid.Point) error {
 	inv := g.ECS.Inventory[actor]
 	if len(inv.Items) <= n {
-		return errors.New("Empty slot.")
+		return logerror.New("Empty slot.")
 	}
+
 	i := inv.Items[n]
 	switch e := g.ECS.Entities[i].(type) {
 	case Consumable:

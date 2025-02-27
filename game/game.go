@@ -4,13 +4,13 @@
 package main
 
 import (
-	"errors"
 	"fmt"
 
 	"codeberg.org/anaseto/gruid"
 	"codeberg.org/anaseto/gruid/paths"
 	"github.com/bayou-brogrammer/go-rl/game/color"
 	"github.com/bayou-brogrammer/go-rl/game/dungeon"
+	"github.com/bayou-brogrammer/go-rl/game/logerror"
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
 )
@@ -204,20 +204,20 @@ func (g *game) InventoryAdd(actor, i int) error {
 	case Consumable:
 		inv := g.ECS.Inventory[actor]
 		if len(inv.Items) >= maxSize {
-			return errors.New("Inventory is full.")
+			return logerror.New("Inventory is full.")
 		}
 		inv.Items = append(inv.Items, i)
 		delete(g.ECS.Positions, i)
 		return nil
 	}
-	return errors.New(ErrNoShow)
+	return logerror.New(ErrNoShow)
 }
 
 // Drop an item from the inventory.
 func (g *game) InventoryRemove(actor, n int) error {
 	inv := g.ECS.Inventory[actor]
 	if len(inv.Items) <= n {
-		return errors.New("Empty slot.")
+		return logerror.New("Empty slot.")
 	}
 	i := inv.Items[n]
 	inv.Items[n] = inv.Items[len(inv.Items)-1]
