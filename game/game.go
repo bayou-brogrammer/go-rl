@@ -17,6 +17,8 @@ import (
 
 // game represents information relevant the current game's state.
 type game struct {
+	Version string
+
 	ECS *ECS             // entities present on the map
 	Map *dungeon.Map     // the game map, made of tiles
 	PR  *paths.PathRange // path range for the map

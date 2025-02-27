@@ -10,6 +10,12 @@ import (
 	"github.com/bayou-brogrammer/go-rl/game/color"
 )
 
+const (
+	MenuNewGame = iota
+	MenuContinue
+	MenuQuit
+)
+
 type mode int
 
 const (
@@ -59,15 +65,3 @@ func (m *model) init() gruid.Effect {
 	})
 	return nil
 }
-
-type targeting struct {
-	pos    gruid.Point
-	item   int // item to use after selecting target
-	radius int
-}
-
-const (
-	MenuNewGame = iota
-	MenuContinue
-	MenuQuit
-)

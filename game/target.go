@@ -7,6 +7,12 @@ import (
 	"github.com/bayou-brogrammer/go-rl/game/color"
 )
 
+type targeting struct {
+	pos    gruid.Point
+	item   int // item to use after selecting target
+	radius int
+}
+
 // InventoryActivateWithTarget uses a given item from the inventory, with
 // an optional target.
 func (g *game) InventoryActivateWithTarget(actor, n int, targ *gruid.Point) error {
