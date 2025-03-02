@@ -114,11 +114,11 @@ func (md *model) normalModeAction(action action) (again bool, eff gruid.Effect, 
 		md.targ.pos = md.game.ECS.PP().Shift(0, LogLines)
 	}
 
-	// if md.game.ECS.PlayerDied() {
-	// 	md.game.Logf("You died -- press “q” or escape to quit", color.ColorLogSpecial)
-	// 	md.mode = modeEnd
-	// 	return nil
-	// }
+	if md.game.ECS.PlayerDied() {
+		md.game.Logf("You died -- press “q” or escape to quit", color.ColorLogSpecial)
+		md.mode = modeEnd
+		return false, nil, nil
+	}
 
 	if err != nil {
 		again = true

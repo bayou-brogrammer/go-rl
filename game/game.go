@@ -55,7 +55,7 @@ func (g *game) initalizeFirstLevel() {
 	g.UpdateFOV()
 
 	// Add some monsters
-	g.SpawnMonsters()
+	// g.SpawnMonsters()
 
 	// Add items
 	g.PlaceItems()
@@ -65,6 +65,7 @@ func (g *game) InitalizeLevel() {
 	if g.rand == nil {
 		g.rand = rand.New(rand.NewSource(time.Now().UnixNano()))
 	}
+
 }
 
 // SpawnMonsters adds some monsters in the current map.

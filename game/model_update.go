@@ -120,7 +120,7 @@ func (md *model) updateGameMenu(msg gruid.Msg) gruid.Effect {
 		md.info.SetText("")
 		switch md.gameMenu.Active() {
 		case MenuNewGame:
-			md.game.InitalizeLevel()
+			md.game.initalizeFirstLevel()
 			md.mode = modeNormal
 		case MenuContinue:
 			data, err := LoadFile("save")
