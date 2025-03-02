@@ -1,4 +1,4 @@
-package main
+package game
 
 import (
 	"codeberg.org/anaseto/gruid"
@@ -18,4 +18,8 @@ func NewPlayer() *Player {
 	player := &Player{}
 	player.FOV = rl.NewFOV(gruid.NewRange(-maxLOS, -maxLOS, maxLOS+1, maxLOS+1))
 	return player
+}
+
+func (g *game) PlayerBump(newPt gruid.Point) (again bool, err error) {
+	return false, nil
 }

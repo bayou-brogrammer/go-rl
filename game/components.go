@@ -1,6 +1,6 @@
 // This file describes entity components, for example for basic fighting or AI.
 
-package main
+package game
 
 import "codeberg.org/anaseto/gruid"
 

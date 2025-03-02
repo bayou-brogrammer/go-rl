@@ -1,6 +1,6 @@
 // This file manages actions resulting from user input.
 
-package main
+package game
 
 import (
 	"log"
@@ -10,80 +10,120 @@ import (
 	"github.com/bayou-brogrammer/go-rl/game/color"
 )
 
+////////////////////
+// action errors
+////////////////////
+
+type actionError int
+
+const (
+	actionErrorUnknown actionError = iota
+)
+
+func (e actionError) Error() string {
+	switch e {
+	case actionErrorUnknown:
+		return "unknown action"
+	}
+	return ""
+}
+
+////////////////////
+// action
+////////////////////
+
+type actionType int
+
 // action represents information relevant to the last UI action performed.
 type action struct {
 	Type  actionType  // kind of action (movement, quitting, ...)
 	Delta gruid.Point // direction for ActionBump
 }
 
-type actionType int
-
 // These constants represent the possible UI actions.
 const (
-	NoAction           actionType = iota
-	ActionBump                    // bump request (attack or movement)
-	ActionDrop                    // menu to drop an inventory item
-	ActionInventory               // inventory menu to use an item
-	ActionPickup                  // pickup an item on the ground
-	ActionWait                    // wait a turn
-	ActionQuit                    // quit the game (without saving)
-	ActionSave                    // save the game
-	ActionViewMessages            // view history messages
-	ActionExamine                 // examine map
+	ActionNone actionType = iota
+	ActionW
+	ActionS
+	ActionN
+	ActionE
+	ActionBump         // bump request (attack or movement)
+	ActionDrop         // menu to drop an inventory item
+	ActionInventory    // inventory menu to use an item
+	ActionPickup       // pickup an item on the ground
+	ActionWait         // wait a turn
+	ActionQuit         // quit the game (without saving)
+	ActionSave         // save the game
+	ActionViewMessages // view history messages
+	ActionExamine      // examine map
 )
 
-// handleAction updates the model in response to current recorded last action.
-func (m *model) handleAction() gruid.Effect {
-	switch m.action.Type {
+func (md *model) normalModeAction(action action) (again bool, eff gruid.Effect, err error) {
+	switch action.Type {
+	case ActionNone:
+		again = true
+		err = actionErrorUnknown
+
 	case ActionBump:
-		np := m.game.ECS.PP().Add(m.action.Delta)
-		m.game.Bump(np)
+		np := md.game.ECS.PP().Add(action.Delta)
+		md.game.Bump(np)
+
 	case ActionDrop:
-		m.OpenInventory("Drop item")
-		m.mode = modeInventoryDrop
+		md.OpenInventory("Drop item")
+		md.mode = modeInventoryDrop
+
 	case ActionInventory:
-		m.OpenInventory("Use item")
-		m.mode = modeInventoryActivate
+		md.OpenInventory("Use item")
+		md.mode = modeInventoryActivate
+
 	case ActionPickup:
-		m.game.PickupItem()
+		md.game.PickupItem()
+
 	case ActionWait:
-		m.game.EndTurn()
+		// md.game.EndTurn()
+
 	case ActionSave:
-		data, err := EncodeGame(m.game)
+		data, err := EncodeGame(md.game)
 		if err == nil {
 			err = SaveFile("save", data)
 		}
 		if err != nil {
-			m.game.Logf("Could not save game.", color.ColorLogSpecial)
+			md.game.Logf("Could not save game.", color.ColorLogSpecial)
 			log.Printf("could not save game: %v", err)
 			break
 		}
-		return gruid.End()
+
 	case ActionQuit:
-		// Remove any previously saved files (if any).
-		RemoveDataFile("save")
-		// for now, just terminate with gruid End command: this will
-		// have to be updated later when implementing saving.
-		return gruid.End()
+		again = true
+		// // Remove any previously saved files (if any).
+		// RemoveDataFile("save")
+		md.Quit()
+
 	case ActionViewMessages:
-		m.mode = modeMessageViewer
+		md.mode = modeMessageViewer
 		lines := []ui.StyledText{}
-		for _, e := range m.game.Log {
+		for _, e := range md.game.Log {
 			st := gruid.Style{}
 			st.Fg = e.Color
 			lines = append(lines, ui.NewStyledText(e.String(), st))
 		}
-		m.viewer.SetLines(lines)
+		md.viewer.SetLines(lines)
+
 	case ActionExamine:
-		m.mode = modeExamination
-		m.targ.pos = m.game.ECS.PP().Shift(0, LogLines)
+		md.mode = modeExamination
+		md.targ.pos = md.game.ECS.PP().Shift(0, LogLines)
 	}
-	if m.game.ECS.PlayerDied() {
-		m.game.Logf("You died -- press “q” or escape to quit", color.ColorLogSpecial)
-		m.mode = modeEnd
-		return nil
+
+	// if md.game.ECS.PlayerDied() {
+	// 	md.game.Logf("You died -- press “q” or escape to quit", color.ColorLogSpecial)
+	// 	md.mode = modeEnd
+	// 	return nil
+	// }
+
+	if err != nil {
+		again = true
 	}
-	return nil
+	return again, eff, err
 }
 
 // Bump moves the player to a given position and updates FOV information,
@@ -150,4 +190,9 @@ func (m *model) OpenInventory(title string) {
 		Box:     &ui.Box{Title: ui.Text(title)},
 		Entries: entries,
 	})
+}
+
+func (md *model) Quit() {
+	// md.g.PrintStyled("Do you really want to quit without saving? [y/N]", logConfirm)
+	md.mode = modeQuitConfirmation
 }

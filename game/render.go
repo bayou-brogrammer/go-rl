@@ -1,4 +1,4 @@
-package main
+package game
 
 // renderOrder is a type representing the priority of an entity rendering.
 type renderOrder int

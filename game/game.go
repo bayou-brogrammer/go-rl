@@ -1,14 +1,17 @@
 // This file handles game related affairs that are not specific to entities or
 // the map.
 
-package main
+package game
 
 import (
 	"fmt"
+	"math/rand"
+	"time"
 
 	"codeberg.org/anaseto/gruid"
 	"codeberg.org/anaseto/gruid/paths"
 	"github.com/bayou-brogrammer/go-rl/game/color"
+	"github.com/bayou-brogrammer/go-rl/game/constants"
 	"github.com/bayou-brogrammer/go-rl/game/dungeon"
 	"github.com/bayou-brogrammer/go-rl/game/logerror"
 	"golang.org/x/text/cases"
@@ -18,16 +21,20 @@ import (
 // game represents information relevant the current game's state.
 type game struct {
 	Version string
+	Depth   int
 
 	ECS *ECS             // entities present on the map
 	Map *dungeon.Map     // the game map, made of tiles
 	PR  *paths.PathRange // path range for the map
 	Log []LogEntry       // log entries
+
+	rand *rand.Rand // random number generator
 }
 
-// NewGame initializes a new game.
-func NewGame() *game {
-	g := &game{}
+func (g *game) initalizeFirstLevel() {
+	g.Version = constants.Version
+	g.Depth++ // start at 1
+
 	size := gruid.Point{UIWidth, UIHeight}
 	size.Y -= 3 // for log and status
 
@@ -52,8 +59,12 @@ func NewGame() *game {
 
 	// Add items
 	g.PlaceItems()
+}
 
-	return g
+func (g *game) InitalizeLevel() {
+	if g.rand == nil {
+		g.rand = rand.New(rand.NewSource(time.Now().UnixNano()))
+	}
 }
 
 // SpawnMonsters adds some monsters in the current map.
@@ -106,11 +117,11 @@ func (g *game) FreeFloorTile() gruid.Point {
 // EndTurn is called when the player's turn ends. Currently, the player and
 // monsters have all the same speed, so we make each monster act each time the
 // player's does an action that ends a turn.
-func (g *game) EndTurn() {
+func (g *game) EndTurn() gruid.Effect {
 	g.UpdateFOV()
 	for i, e := range g.ECS.Entities {
 		if g.ECS.PlayerDied() {
-			return
+			return nil
 		}
 		switch e.(type) {
 		case *Monster:
@@ -118,6 +129,7 @@ func (g *game) EndTurn() {
 		}
 	}
 	g.ECS.StatusesNextTurn()
+	return nil
 }
 
 // UpdateFOV updates the field of view.

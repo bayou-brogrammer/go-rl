@@ -8,16 +8,16 @@ TCOD.
 
 ## Table of Contents
 
-* [Part 0 & 1](https://codeberg.org/anaseto/gruid-rltuto/src/branch/part-1) - Setting Up & Drawing the “@” symbol and moving it around
-* [Part 2](https://codeberg.org/anaseto/gruid-rltuto/src/branch/part-2) - Generic entities and the map
-* [Part 3](https://codeberg.org/anaseto/gruid-rltuto/src/branch/part-3) - Generating a Dungeon
-* [Part 4](https://codeberg.org/anaseto/gruid-rltuto/src/branch/part-4) - Field of View
-* [Part 5](https://codeberg.org/anaseto/gruid-rltuto/src/branch/part-5) - Placing enemies and kicking them (harmlessly)
-* [Part 6](https://codeberg.org/anaseto/gruid-rltuto/src/branch/part-6) - Doing (and taking) some damage
-* [Part 7](https://codeberg.org/anaseto/gruid-rltuto/src/branch/part-7) - Creating the Interface
-* [Part 8](https://codeberg.org/anaseto/gruid-rltuto/src/branch/part-8) - Items and Inventory
-* [Part 9](https://codeberg.org/anaseto/gruid-rltuto/src/branch/part-9) - Ranged Scrolls and Targeting
-* [Part 10](https://codeberg.org/anaseto/gruid-rltuto/src/branch/part-10) - Saving and Loading
+- [Part 0 & 1](https://codeberg.org/anaseto/gruid-rltuto/src/branch/part-1) - Setting Up & Drawing the “@” symbol and moving it around
+- [Part 2](https://codeberg.org/anaseto/gruid-rltuto/src/branch/part-2) - Generic entities and the map
+- [Part 3](https://codeberg.org/anaseto/gruid-rltuto/src/branch/part-3) - Generating a Dungeon
+- [Part 4](https://codeberg.org/anaseto/gruid-rltuto/src/branch/part-4) - Field of View
+- [Part 5](https://codeberg.org/anaseto/gruid-rltuto/src/branch/part-5) - Placing enemies and kicking them (harmlessly)
+- [Part 6](https://codeberg.org/anaseto/gruid-rltuto/src/branch/part-6) - Doing (and taking) some damage
+- [Part 7](https://codeberg.org/anaseto/gruid-rltuto/src/branch/part-7) - Creating the Interface
+- [Part 8](https://codeberg.org/anaseto/gruid-rltuto/src/branch/part-8) - Items and Inventory
+- [Part 9](https://codeberg.org/anaseto/gruid-rltuto/src/branch/part-9) - Ranged Scrolls and Targeting
+- [Part 10](https://codeberg.org/anaseto/gruid-rltuto/src/branch/part-10) - Saving and Loading
 
 ## Tips & Remarks
 
@@ -34,7 +34,7 @@ Assuming you've followed the set up instructions of [Part
 0](https://codeberg.org/anaseto/gruid-rltuto/src/branch/part-1), you may want to clone
 locally the tutorial's repository to explore:
 
-``` sh
+```sh
 # Clone the repository in a new directory gruid-rltuto:
 git clone https://codeberg.org/anaseto/gruid-rltuto
 cd gruid-rltuto
@@ -48,7 +48,7 @@ git diff part-1..part-2 model.go
 go run .
 ```
 
-*Note:* The code in this repository can be used under the same permissive
+_Note:_ The code in this repository can be used under the same permissive
 license as gruid, or as a public domain work
 [CC0](https://creativecommons.org/publicdomain/zero/1.0/), as you prefer. In
 short, you can do whatever you want with it.

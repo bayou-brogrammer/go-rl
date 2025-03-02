@@ -1,5 +1,5 @@
 // This is the main file of the tutorial. It defines the main routine.
-package main
+package game
 
 import (
 	"context"
@@ -17,12 +17,12 @@ const (
 	MapHeight = UIHeight - 1 - LogLines
 )
 
-func main() {
+func RunGame() {
 	// Create a new grid with standard 80x24 size.
 	gd := gruid.NewGrid(UIWidth, UIHeight)
 
 	// Create the main application's model, using grid gd.
-	m := &model{grid: gd}
+	m := &model{grid: gd, game: &game{}}
 
 	// Get a TileManager for drawing fonts on the screen.
 	t, err := GetTileDrawer()

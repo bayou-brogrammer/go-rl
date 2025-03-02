@@ -1,6 +1,6 @@
 // This file describes item entities.
 
-package main
+package game
 
 import (
 	"codeberg.org/anaseto/gruid"

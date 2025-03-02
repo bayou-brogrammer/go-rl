@@ -11,4 +11,6 @@ require (
 
 require github.com/veandco/go-sdl2 v0.4.40 // indirect
 
-// replace codeberg.org/anaseto/gruid => ../gruid
+replace codeberg.org/anaseto/gruid => /Users/jacoblecoq/Projects/go/gruid-libs/gruid
+replace codeberg.org/anaseto/gruid-sdl => /Users/jacoblecoq/Projects/go/gruid-libs/gruid-sdl
+replace codeberg.org/anaseto/gruid-tcell => /Users/jacoblecoq/Projects/go/gruid-libs/gruid-tcell

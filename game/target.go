@@ -1,4 +1,4 @@
-package main
+package game
 
 import (
 	"codeberg.org/anaseto/gruid"
@@ -46,4 +46,46 @@ func (m *model) activateTarget(p gruid.Point) {
 
 	m.mode = modeNormal
 	m.targ = targeting{}
+}
+
+// updateTargeting updates targeting information in response to user input
+// messages.
+func (md *model) updateTargeting(msg gruid.Msg) {
+	maprg := gruid.NewRange(0, LogLines, UIWidth, UIHeight-1)
+	if !md.targ.pos.In(maprg) {
+		md.targ.pos = md.game.ECS.PP().Add(maprg.Min)
+	}
+
+	p := md.targ.pos.Sub(maprg.Min)
+	switch msg := msg.(type) {
+	case gruid.MsgKeyDown:
+		switch msg.Key {
+		case gruid.KeyArrowLeft, "h":
+			p = p.Shift(-1, 0)
+		case gruid.KeyArrowDown, "j":
+			p = p.Shift(0, 1)
+		case gruid.KeyArrowUp, "k":
+			p = p.Shift(0, -1)
+		case gruid.KeyArrowRight, "l":
+			p = p.Shift(1, 0)
+		case gruid.KeyEnter, ".":
+			if md.mode == modeExamination {
+				break
+			}
+			md.activateTarget(p)
+			return
+		case gruid.KeyEscape, "q":
+			md.targ = targeting{}
+			md.mode = modeNormal
+			return
+		}
+		md.targ.pos = p.Add(maprg.Min)
+	case gruid.MsgMouse:
+		switch msg.Action {
+		case gruid.MouseMove:
+			md.targ.pos = msg.P
+		case gruid.MouseMain:
+			md.activateTarget(p)
+		}
+	}
 }

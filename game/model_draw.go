@@ -1,4 +1,4 @@
-package main
+package game
 
 import (
 	"sort"
@@ -9,7 +9,6 @@ import (
 	"codeberg.org/anaseto/gruid/ui"
 	"github.com/bayou-brogrammer/go-rl/game/color"
 )
-
 
 // Draw implements gruid.Model.Draw. It draws a simple map that spans the whole
 // grid.
@@ -118,6 +117,7 @@ func (m *model) DrawNames(gd gruid.Grid) {
 	if !m.targ.pos.In(maprg) {
 		return
 	}
+
 	p := m.targ.pos.Sub(maprg.Min)
 	rad := m.targ.radius
 	rg := gruid.Range{Min: p.Sub(gruid.Point{rad, rad}), Max: p.Add(gruid.Point{rad + 1, rad + 1})}
@@ -127,6 +127,7 @@ func (m *model) DrawNames(gd gruid.Grid) {
 		c.Style.Attrs |= color.AttrReverse
 		gd.Set(q, c)
 	})
+
 	// We get the names of the entities at p.
 	names := []string{}
 	for i, q := range m.game.ECS.Positions {
@@ -138,9 +139,11 @@ func (m *model) DrawNames(gd gruid.Grid) {
 			names = append(names, name)
 		}
 	}
+
 	if len(names) == 0 {
 		return
 	}
+
 	// We sort the names. This could be improved to sort by entity type
 	// too, as well as to remove duplicates (for example showing “corpse
 	// (3x)” if there are three corpses).

@@ -1,6 +1,6 @@
 // This file handles game saving.
 
-package main
+package game
 
 import (
 	"bytes"

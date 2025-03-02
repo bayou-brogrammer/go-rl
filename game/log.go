@@ -1,6 +1,6 @@
 // This file handles the player's log.
 
-package main
+package game
 
 import (
 	"fmt"
@@ -8,6 +8,15 @@ import (
 	"codeberg.org/anaseto/gruid"
 	"codeberg.org/anaseto/gruid/ui"
 )
+
+// Add this type definition somewhere in your game package
+type forcedTickError struct {
+	msg string
+}
+
+func (e *forcedTickError) Error() string {
+	return e.msg
+}
 
 // LogEntry contains information about a log entry.
 type LogEntry struct {
