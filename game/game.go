@@ -38,7 +38,7 @@ func (g *game) initalizeFirstLevel() {
 	size := gruid.Point{UIWidth, UIHeight}
 	size.Y -= 3 // for log and status
 
-	g.Map = dungeon.NewMap(size)
+	g.Map = dungeon.NewMap(size, dungeon.Town)
 	g.PR = paths.NewPathRange(gruid.NewRange(0, 0, size.X, size.Y))
 
 	// Initialize entities
@@ -138,15 +138,18 @@ func (g *game) UpdateFOV() {
 	player := g.ECS.Player()
 	// player position
 	pp := g.ECS.PP()
+
 	// We shift the FOV's Range so that it will be centered on the new
 	// player's position.
 	rg := gruid.NewRange(-maxLOS, -maxLOS, maxLOS+1, maxLOS+1)
 	player.FOV.SetRange(rg.Add(pp).Intersect(g.Map.Grid.Range()))
+
 	// We mark cells in field of view as explored. We use the symmetric
 	// shadow casting algorithm provided by the rl package.
 	passable := func(p gruid.Point) bool {
-		return g.Map.Grid.At(p) != dungeon.Wall
+		return g.Map.Grid.At(p) != dungeon.WallCell
 	}
+
 	for _, p := range player.FOV.SSCVisionMap(pp, maxLOS, passable, false) {
 		if paths.DistanceManhattan(p, pp) > maxLOS {
 			continue

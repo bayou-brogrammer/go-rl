@@ -2,8 +2,11 @@ package io
 
 import (
 	"bytes"
+	"compress/gzip"
 	"compress/zlib"
 	"encoding/gob"
+	"log"
+	"os"
 )
 
 func DecodeSave[T any](data []byte) (*T, error) {
@@ -22,4 +25,22 @@ func DecodeSave[T any](data []byte) (*T, error) {
 
 	r.Close()
 	return lg, nil
+}
+
+func DecodeBinary(filename string) (*gzip.Reader, error) {
+	file, err := os.Open(filename)
+	if err != nil {
+		log.Fatal(err)
+		return nil, err
+	}
+	defer file.Close()
+
+	r, err := gzip.NewReader(file)
+	if err != nil {
+		log.Fatal(err)
+		return nil, err
+	}
+	defer r.Close()
+
+	return r, nil
 }

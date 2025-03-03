@@ -63,14 +63,13 @@ type model struct {
 // init initializes the model: widgets' initialization, and starting mode.
 func (md *model) init() gruid.Effect {
 	if runtime.GOOS != "js" {
-		// md.mode = modeWelcom
+		// md.mode = modeGameMenu
 	}
 
 	md.initKeys()
 	md.initWidgets()
 
 	g := md.game
-	md.mode = modeGameMenu
 
 	load, err := g.LoadGame()
 	if !load {
@@ -78,6 +77,9 @@ func (md *model) init() gruid.Effect {
 	} else {
 		g.rand = rand.New(rand.NewSource(time.Now().UnixNano()))
 	}
+
+	md.game.initalizeFirstLevel()
+	md.mode = modeNormal
 
 	if err != nil {
 		// g.PrintStyled("Warning: could not load old saved game… starting new game.", logError)

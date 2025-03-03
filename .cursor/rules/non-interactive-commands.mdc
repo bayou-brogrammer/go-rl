@@ -1,6 +1,7 @@
 ---
-description: 
+description: Non Interactive Commands
 globs: 
+alwaysApply: false
 ---
 # Non-Interactive Commands
 

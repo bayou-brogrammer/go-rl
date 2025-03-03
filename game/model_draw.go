@@ -12,35 +12,52 @@ import (
 
 // Draw implements gruid.Model.Draw. It draws a simple map that spans the whole
 // grid.
-func (m *model) Draw() gruid.Grid {
-	mapgrid := m.grid.Slice(m.grid.Range().Shift(0, LogLines, 0, -1))
+func (md *model) Draw() gruid.Grid {
+	mapgrid := md.grid.Slice(md.grid.Range().Shift(0, LogLines, 0, -1))
 
-	switch m.mode {
+	switch md.mode {
 	case modeGameMenu:
-		return m.DrawGameMenu()
+		return md.DrawGameMenu()
 	case modeMessageViewer:
-		m.grid.Copy(m.viewer.Draw())
-		return m.grid
+		md.grid.Copy(md.viewer.Draw())
+		return md.grid
 	case modeInventoryDrop, modeInventoryActivate:
-		mapgrid.Copy(m.inventory.Draw())
-		return m.grid
+		mapgrid.Copy(md.inventory.Draw())
+		return md.grid
 	}
 
-	m.grid.Fill(gruid.Cell{Rune: ' '})
-	g := m.game
+	md.grid.Fill(gruid.Cell{Rune: ' '})
 
 	// We draw the map tiles.
+	md.drawMap(mapgrid)
+	md.drawEntities(mapgrid)
+
+	md.DrawNames(mapgrid)
+	md.DrawLog(md.grid.Slice(md.grid.Range().Lines(0, LogLines)))
+	md.DrawStatus(md.grid.Slice(md.grid.Range().Line(md.grid.Size().Y - 1)))
+
+	return md.grid
+}
+
+func (md *model) drawMap(gd gruid.Grid) {
+	g := md.game
+	// We draw the map tiles.
 	it := g.Map.Grid.Iterator()
+
 	for it.Next() {
-		if !g.Map.Explored[it.P()] {
-			continue
-		}
+		// if !g.Map.Explored[it.P()] {
+		// 	continue
+		// }
 		c := gruid.Cell{Rune: g.Map.Rune(it.Cell())}
 		if g.InFOV(it.P()) {
 			c.Style.Bg = color.ColorFOV
 		}
-		mapgrid.Set(it.P(), c)
+		gd.Set(it.P(), c)
 	}
+}
+
+func (md *model) drawEntities(gd gruid.Grid) {
+	g := md.game
 
 	// We sort entity indexes using the render ordering.
 	sortedEntities := make([]int, 0, len(g.ECS.Entities))
@@ -57,18 +74,12 @@ func (m *model) Draw() gruid.Grid {
 		if !g.Map.Explored[p] || !g.InFOV(p) {
 			continue
 		}
-		c := mapgrid.At(p)
+		c := gd.At(p)
 		c.Rune, c.Style.Fg = g.ECS.GetStyle(i)
-		mapgrid.Set(p, c)
+		gd.Set(p, c)
 		// NOTE: We retrieved current cell at e.Pos() to preserve
 		// background (in FOV or not).
 	}
-
-	m.DrawNames(mapgrid)
-	m.DrawLog(m.grid.Slice(m.grid.Range().Lines(0, LogLines)))
-	m.DrawStatus(m.grid.Slice(m.grid.Range().Line(m.grid.Size().Y - 1)))
-
-	return m.grid
 }
 
 var mainMenuAnchor = gruid.Point{10, 6}

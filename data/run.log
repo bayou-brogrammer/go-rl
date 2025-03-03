@@ -1,0 +1,102 @@
+REXPaint v1.70
+
+[    36] I=0000002 Initializing resources
+[    36] I=0000008 Loading colors
+[    36] I=0000016 Initializing Rogue Engine X
+[    36] I=0000016 |   Starting SDL
+[    36] I=0000105 |   Importing icon
+[    36] E=0000106 |   REX_Init() | Application icon "rex/icon.png" not found, this program may not be installed correctly!
+[    36] I=0000106 |   Confirmed resource initialization
+[    36] I=0000106 |   Initializing font type data
+[    36] I=0000108 |   Mapping standard ASCII values
+[    36] I=0000108 |   Loading fonts
+[    36] I=0000110 |   |   [font set: CP437 12x12]
+[    36] I=0000121 |   |   ...cp437_12x12.png
+[    36] I=0000123 |   |   ...cp437_12x12.png
+[    36] I=0000123 |   |   [font set: CP437 14x14]
+[    36] I=0000129 |   |   ...cp437_14x14.png
+[    36] I=0000131 |   |   ...cp437_14x14.png
+[    36] I=0000131 |   |   [font set: CP437 16x16]
+[    36] I=0000137 |   |   ...cp437_16x16.png
+[    36] I=0000140 |   |   ...cp437_16x16.png
+[    36] I=0000140 |   |   [font set ignored: CP437 18x18] (resolution exceeds desktop)
+[    36] I=0000140 |   |   [font set ignored: CP437 20x20] (resolution exceeds desktop)
+[    36] I=0000140 |   |   [font set: CP437 8x8]
+[    36] I=0000143 |   |   ...cp437_8x8.png
+[    36] I=0000144 |   |   ...cp437_8x8.png
+[    36] I=0000144 |   |   [font set: CP437 10x10]
+[    36] I=0000148 |   |   ...cp437_10x10.png
+[    36] I=0000149 |   |   ...cp437_10x10.png
+[    36] I=0000150 |   \---DONE
+[    36] I=0000150 |   Setting video mode
+[    36] I=0000150 |   |   Calculating dimensions
+[    36] I=0000150 |   |   ...charW=12
+[    36] I=0000150 |   |   ...charH=12
+[    36] I=0000150 |   |   ...wMin=936
+[    36] I=0000150 |   |   ...hMin=720
+[    36] I=0000150 |   |   ...wWanted=936
+[    36] I=0000150 |   |   ...hWanted=720
+[    36] I=0000150 |   |   All video modes available
+[    36] I=0000150 |   |   Setting software video mode
+[    36] I=0000351 |   \---DONE
+[    36] I=0000351 |   Setting video mode
+[    36] I=0000352 |   |   Calculating dimensions
+[    36] I=0000352 |   |   ...charW=12
+[    36] I=0000352 |   |   ...charH=12
+[    36] I=0000352 |   |   ...wMin=936
+[    36] I=0000352 |   |   ...hMin=720
+[    36] I=0000352 |   |   ...wWanted=936
+[    36] I=0000352 |   |   ...hWanted=720
+[    36] I=0000352 |   |   All video modes available
+[    36] I=0000352 |   |   Setting software video mode
+[    36] I=0000369 |   \---DONE
+[    36] I=0000369 |   Initializing audio
+[    36] I=0001148 |   Creating console
+[    36] I=0001149 \---DONE
+[    36] I=0001152 RP::initialize() | Initializing program
+[    36] I=0001152 |   Mapping font glyphs
+[    36] I=0001152 |   Creating game consoles
+[    36] I=0001153 |   CProgram() | Creating CProgram
+[    36] I=0001153 |   |   Initializing input domains and commands
+[    36] I=0001155 |   |   Loading inline colors
+[    36] I=0001155 |   \---DONE
+[    36] I=0001155 |   Creating top-level consoles
+[    36] I=0001155 |   ...CPaint
+[    36] I=0001157 |   Loading palette: Palette
+[    36] I=0001160 |   ...CBrowse
+[    36] E=0001162 |   CPathButton::init() | Unable to open file for reading: images/prefab.xp
+[    36] I=0001163 |   ...CCanvas
+[    36] I=0001164 |   ...CPicker
+[    36] I=0001165 |   ...CFilename
+[    36] I=0001165 |   ...CResize
+[    36] I=0001165 |   ...CConfirm
+[    36] I=0001165 |   ...COptions
+[    36] I=0001165 |   ...CCommands
+[    36] I=0001166 |   ...CMessage
+[    36] I=0001166 |   ...CMessage 2
+[    36] I=0001168 \---DONE
+[    36] I=0001168 Starting REX loop
+[   304] I=0001168 Http::newsCheck() | Checking version and retrieving news
+[   304] I=0001168 |   Resolving address...
+[   304] I=0001171 |   Connecting...
+[   304] I=0001725 |   Sending content...
+[   304] I=0001726 |   Waiting for ACK...
+[   304] I=0001809 |   Got 324 bytes: HTTP/1.1 200 OK
+Date: Mon, 03 Mar 2025 01:54:18 GMT
+Server: Apache
+Upgrade: h2,h2c
+Connection: Upgrade
+Vary: Accept-Encoding
+Transfer-Encoding: chunked
+Content-Type: text/html; charset=UTF-8
+
+70
+version_v1.70:REXPaint v1.70 is out! See the announcement on Grid Sage Forums for the latest version info.</END>
+0
+
+
+[   304] I=0001809 |   POST succeeded
+[   304] I=0001809 |   Closing socket...
+[   304] I=0001810 \---DONE
+[    36] I=0005905 Saving config
+[    36] I=0005906 exitREXPaint() | Cleaning up program before exit

@@ -8,7 +8,7 @@ import (
 )
 
 // SaveGob encodes the provided data into a gob file stored in the platform-specific data directory.
-func SaveGob(filename string, data interface{}) error {
+func SaveGob(filename string, data any) error {
 	dataDir, err := GetDataDir()
 	if err != nil {
 		return err
@@ -33,7 +33,7 @@ func SaveGob(filename string, data interface{}) error {
 }
 
 // LoadGob opens the gob file from the platform-specific data directory and decodes its contents into data.
-func LoadGob(filename string, data interface{}) error {
+func LoadGob(filename string, data any) error {
 	dataDir, err := GetDataDir()
 	if err != nil {
 		return err

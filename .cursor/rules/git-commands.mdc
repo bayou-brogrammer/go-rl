@@ -1,6 +1,7 @@
 ---
 description: Rules for handling git commands safely and effectively.
 globs: 
+alwaysApply: false
 ---
 <rule>
 name: git_commands
