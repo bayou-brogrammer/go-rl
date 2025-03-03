@@ -8,4 +8,5 @@ short, you can do whatever you want with it.
 ## Credits
 
 [anaseto](https://codeberg.org/anaseto) for his multitude of repositories to learn from
+
 [Gruid Rltuto](https://codeberg.org/anaseto/gruid-rltuto)
