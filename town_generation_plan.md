@@ -3,6 +3,7 @@
 ## Overview
 
 The town generation method will create a town with the following characteristics:
+
 - Grid-based streets forming the main structure
 - Some organic elements (like slightly curved streets or irregular building placements)
 - Walled districts dividing the town into sections
@@ -14,7 +15,7 @@ The town generation method will create a town with the following characteristics
 
 We'll create a new file called `town.go` in the `game/dungeon/` directory that will contain our town generation code.
 
-```
+```plaintext
 game/dungeon/
 ├── bsp.go
 ├── dungeon.go
@@ -235,7 +236,7 @@ const (
 
 Here's a conceptual representation of what the generated town might look like:
 
-```
+```plaintext
 ##############################################
 #                                            #
 #   ################    ###################  #
@@ -264,6 +265,7 @@ Here's a conceptual representation of what the generated town might look like:
 ```
 
 Where:
+
 - `#` represents walls
 - `[]` represents buildings
 - Empty spaces represent streets

@@ -147,7 +147,7 @@ func (g *game) UpdateFOV() {
 	// We mark cells in field of view as explored. We use the symmetric
 	// shadow casting algorithm provided by the rl package.
 	passable := func(p gruid.Point) bool {
-		return g.Map.Grid.At(p) != dungeon.WallCell
+		return g.Map.Cell(p) != dungeon.WallCell
 	}
 
 	for _, p := range player.FOV.SSCVisionMap(pp, maxLOS, passable, false) {

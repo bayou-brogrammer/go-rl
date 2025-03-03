@@ -68,14 +68,14 @@ func (dg *dgen) Generate() {
 	}
 
 	for {
-		mgen.CellularAutomataCave(WallCell, FloorCell, 0.42, rules)
+		mgen.CellularAutomataCave(rl.Cell(WallCell), rl.Cell(FloorCell), 0.42, rules)
 		freep := dg.m.RandomFloor()
 		// We put walls in floor cells non reachable from freep, to ensure that
 		// all the cells are connected (which is not guaranteed by cellular
 		// automata map generation).
 		pr := paths.NewPathRange(dg.m.Grid.Range())
 		pr.CCMap(&path{m: dg.m}, freep)
-		ntiles := mgen.KeepCC(pr, freep, WallCell)
+		ntiles := mgen.KeepCC(pr, freep, rl.Cell(WallCell))
 		const minCaveSize = 400
 		if ntiles > minCaveSize {
 			break
@@ -118,8 +118,8 @@ func (dg *dgen) FoliageInRange(less bool, rg gruid.Range) {
 			gp := gruid.Point{X: x - rg.Min.X, Y: y - rg.Min.Y}
 
 			// Only place foliage on floor cells
-			if dg.m.Grid.At(p) == FloorCell && gd.At(gp) == FoliageCell {
-				dg.m.Grid.Set(p, rl.Cell(FoliageCell))
+			if dg.m.Cell(p) == FloorCell && gd.At(gp) == rl.Cell(FoliageCell) {
+				dg.m.SetCell(p, FoliageCell)
 			}
 		}
 	}

@@ -17,7 +17,7 @@ type BSPRoom struct {
 func (r *BSPRoom) Carve(m *Map) {
 	for x := r.X; x < r.X+r.Width; x++ {
 		for y := r.Y; y < r.Y+r.Height; y++ {
-			m.Grid.Set(gruid.Point{X: x, Y: y}, FloorCell)
+			m.SetCell(gruid.Point{X: x, Y: y}, FloorCell)
 		}
 	}
 }
@@ -179,7 +179,7 @@ func createCorridor(m *Map, start, end gruid.Point) {
 		x1, x2 = x2, x1
 	}
 	for x := x1; x <= x2; x++ {
-		m.Grid.Set(gruid.Point{X: x, Y: start.Y}, FloorCell)
+		m.SetCell(gruid.Point{X: x, Y: start.Y}, FloorCell)
 	}
 
 	// Create vertical corridor
@@ -188,7 +188,7 @@ func createCorridor(m *Map, start, end gruid.Point) {
 		y1, y2 = y2, y1
 	}
 	for y := y1; y <= y2; y++ {
-		m.Grid.Set(gruid.Point{X: end.X, Y: y}, FloorCell)
+		m.SetCell(gruid.Point{X: end.X, Y: y}, FloorCell)
 	}
 }
 
@@ -199,7 +199,7 @@ func (m *Map) GenerateBSPMap() {
 	size := m.Grid.Size()
 	for x := range size.X {
 		for y := range size.Y {
-			m.Grid.Set(gruid.Point{X: x, Y: y}, WallCell)
+			m.SetCell(gruid.Point{X: x, Y: y}, WallCell)
 		}
 	}
 

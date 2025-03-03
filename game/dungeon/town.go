@@ -35,13 +35,13 @@ func (dg *dgen) GeneratePrefab(prefab string) {
 	vault.Iter(func(p gruid.Point, c rune) {
 		switch c {
 		case '#':
-			dg.m.Grid.Set(p, WallCell)
+			dg.m.SetCell(p, WallCell)
 		case '.':
-			dg.m.Grid.Set(p, FloorCell)
+			dg.m.SetCell(p, FloorCell)
 		case '+':
-			dg.m.Grid.Set(p, DoorCell)
+			dg.m.SetCell(p, DoorCell)
 		case '=':
-			dg.m.Grid.Set(p, RoadCell)
+			dg.m.SetCell(p, RoadCell)
 		}
 	})
 }
